@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import sklearn
 import seaborn as sns
@@ -160,8 +160,6 @@ final_dataset = final_dataset.drop(['Hours', 'Minutes'], axis=1)
 # Convert Timestamp column to string type and add leading zeros
 final_dataset['Timestamp'] = final_dataset['Timestamp'].astype(str)
 final_dataset['Timestamp'] = final_dataset['Timestamp'].str.zfill(12)
-
-from datetime import datetime, timedelta
 
 # Assuming 'timestamp_str' is the string column containing the timestamps in the format "DDMMYYYYHHMM"
 timestamps = final_dataset['Timestamp']
