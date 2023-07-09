@@ -9,8 +9,8 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 from sklearn.metrics import mean_squared_error,mean_absolute_error,r2_score
-
-data_path=('/home/hbohra/Downloads/prep_data.csv')
+#Give Path to your prepared dataset
+data_path=('/home/hbohra/Downloads/prep_data.csv') 
 
 dataset=pd.read_csv(data_path)
 # Remove any rows with missing values if necessary
