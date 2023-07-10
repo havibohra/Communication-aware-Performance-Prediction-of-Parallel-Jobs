@@ -1,3 +1,4 @@
+Almost out of storage … If you run out, you can't create or edit files, send or receive email on Gmail, or back up to Google Photos.
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -8,9 +9,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
-from sklearn.metrics import mean_squared_error,mean_absolute_error,r2_score
-#Give Path to your prepared dataset
-data_path=('/home/hbohra/Downloads/prep_data.csv') 
+from sklearn.metrics import mean_squared_error,mean_absolute_error,r2_score, mean_absolute_percentage_error
+
+data_path=('/home/hbohra/Downloads/surge_data.csv')
 
 dataset=pd.read_csv(data_path)
 # Remove any rows with missing values if necessary
@@ -100,8 +101,5 @@ print('Mean Absolute Error:', mae)
 r2 = r2_score(test_targets, predictions)
 print('R-squared Score:', r2)
 
-def mean_absolute_percentage_error(y_true, y_pred):
-    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
-
 mape = mean_absolute_percentage_error(test_targets, predictions)
-print('Mean Absolute Percentage Error', mape)
+print('Mean Absolute Percentage Error:', mape)
