@@ -179,11 +179,50 @@ total_seconds = [timedelta.total_seconds() for timedelta in timedeltas]
 
 # Update the dataframe column with the timedeltas or total seconds
 final_dataset['Timestamp'] = timedeltas  # Or df['timestamp'] = total_seconds
-
-# final_dataset
-
 final_dataset['Timestamp'] = pd.to_timedelta(final_dataset['Timestamp']).dt.total_seconds()
+
+final_dataset['Timestamp'] = final_dataset['Timestamp'].astype(int)
+
 print(final_dataset)
+
+# final_dataset.to_csv('/content/drive/My Drive/learning/data_without_actualtime.csv', index=False) ---SAVE IF REQUIRED
+
+### take Walltimes of jobs
+wall_times=pd.read_csv('/content/drive/My Drive/learning/jobs_of_hbohra21_runtime_only.txt',delim_whitespace=True,header=0,names=['JobID','ActualTime'])
+print(wall_times)
+
+wall_times['JobID'] = wall_times['JobID'].str.split('=').str[1]
+wall_times['ActualTime'] = wall_times['ActualTime'].str.split('=').str[1]
+print(wall_times)
+
+## Conversion Of 'ActualTime' to minutes ##
+# Split 'ActualTime' column into hours and minutes
+wall_times[['Hours', 'Minutes','Seconds']] = wall_times['ActualTime'].str.split(':', expand=True)
+
+# Convert hours and minutes to numeric format
+wall_times['Hours'] = pd.to_numeric(wall_times['Hours'])
+wall_times['Minutes'] = pd.to_numeric(wall_times['Minutes'])
+
+# Calculate the total time in minutes
+wall_times['ActualTime'] = wall_times['Hours'] * 60 + wall_times['Minutes']
+
+# Drop the 'Hours' and 'Minutes' columns
+wall_times = wall_times.drop(['Hours', 'Minutes','Seconds'], axis=1)
+
+wall_times['JobID']=wall_times['JobID'].astype('int64')
+wall_times['ActualTime']=wall_times['ActualTime'].astype('int64')
+final_dataset['JobID']=final_dataset['JobID'].astype('int64')
+
+print(wall_times)
+
+final_dataset=pd.merge(final_dataset, wall_times,  on=['JobID'], how='left')
+print(final_dataset)
+
+final_dataset['IN_PORT']=final_dataset['IN_PORT'].astype('int64')
+final_dataset['Rx']=final_dataset['Rx'].astype('int64')
+final_dataset['EX_PORT']=final_dataset['EX_PORT'].astype('int64')
+final_dataset['Tx']=final_dataset['Tx'].astype('int64')
+final_dataset['ActualTime']=final_dataset['ActualTime'].astype('int64')
 
 ### CHECK IF DTYPES ARE AS REQUIRED
 print(final_dataset['Timestamp'].dtype) #datetime64ns
@@ -198,18 +237,12 @@ print(final_dataset['IN_PORT'].dtype)
 print(final_dataset['Rx'].dtype)
 print(final_dataset['EX_PORT'].dtype)
 print(final_dataset['Tx'].dtype)
+print(final_dataset['ActualTime'].dtype)
 
-final_dataset['Timestamp'] = final_dataset['Timestamp'].astype(int)
-
-# Remove any rows with missing values if necessary
-final_dataset = final_dataset.dropna()
-
+final_dataset=final_dataset.dropna()
 print(final_dataset)
 
-# final_dataset.to_csv('/content/drive/My Drive/learning/data_without_actualtime.csv', index=False) ---SAVE IF REQUIRED
-
-
 ####################### SAVE THE PREPARED DATASET TO A LOCATION ##################
-final_dataset.to_csv('/content/drive/My Drive/learning/prep_data.csv', index=False)
+final_dataset.to_csv('/content/drive/My Drive/learning/surge_data.csv', index=False)
 
 #---><---#
