@@ -7,7 +7,7 @@ SURGE'23
 2. Python libraries: Numpy, Pandas, Matplotlib, Tensorflow, re, os, datetime, scikit-learn, and Seaborn.
 
 ## About the Dataset:
-We had data in five types of files: counters_table , jobs_table , paths_table , qstat_table and actual_times data
+We had data in five types of files: counters_table , jobs_table , paths_table , qstat_table and actual_runtimes
 
 ## preprocessing.py
 It contains how to prepare dataset for training model.
